@@ -7,7 +7,7 @@ Remake of the [Albion Online Data](https://www.albion-online-data.com/) project.
 
 Go and Support [Albion Online Data](https://www.albion-online-data.com/) project.
 
-# THANKS.
+# THANK YOU!!!
 
 # License
 This project, and all contributed code, are licensed under the MIT
