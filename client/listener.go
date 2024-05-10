@@ -7,8 +7,8 @@ import (
 	"io"
 	"os"
 
-	"github.com/broderickhyman/albiondata-client/log"
-	photon "github.com/broderickhyman/photon_spectator"
+	"github.com/ao-data/albiondata-client/log"
+	photon "github.com/ao-data/photon_spectator"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcap"
@@ -147,7 +147,13 @@ func (l *listener) stop() {
 
 func (l *listener) processPacket(packet gopacket.Packet) {
 	ipLayer := packet.Layer(layers.LayerTypeIPv4)
+
+	if ipLayer == nil {
+		return
+	}
+
 	ipv4 := ipLayer.(*layers.IPv4)
+
 	if ipLayer != nil {
 		ipv4, _ = ipLayer.(*layers.IPv4)
 		log.Tracef("Packet came from: %s", ipv4.SrcIP)
@@ -158,8 +164,9 @@ func (l *listener) processPacket(packet gopacket.Packet) {
 		return
 	}
 	l.router.albionstate.GameServerIP = ipv4.SrcIP.String()
-	l.router.albionstate.AODataServerID = l.router.albionstate.GetServerID()
+	l.router.albionstate.AODataServerID, l.router.albionstate.AODataIngestBaseURL = l.router.albionstate.GetServer()
 	log.Tracef("Server ID: %s", l.router.albionstate.AODataServerID)
+	log.Tracef("Using AODataIngestBaseURL: %s", l.router.albionstate.AODataIngestBaseURL)
 
 	layer := packet.Layer(photon.PhotonLayerType)
 

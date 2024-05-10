@@ -24,21 +24,29 @@ const (
 	evCastTimeUpdate
 	evCastFinished
 	evCastSpell
+	evCastSpells
 	evCastHit
 	evCastHits
+	evStoredTargetsUpdate
 	evChannelingEnded
 	evAttackBuilding
 	evInventoryPutItem
 	evInventoryDeleteItem
 	evNewCharacter
 	evNewEquipmentItem
+	evNewSiegeBannerItem
 	evNewSimpleItem
 	evNewFurnitureItem
+	evNewKillTrophyItem
 	evNewJournalItem
 	evNewLaborerItem
+	evNewEquipmentItemLegendarySoul
 	evNewSimpleHarvestableObject
 	evNewSimpleHarvestableObjectList
 	evNewHarvestableObject
+	evNewTreasureDestinationObject
+	evTreasureDestinationObjectStatus
+	evCloseTreasureDestinationObject
 	evNewSilverObject
 	evNewBuilding
 	evHarvestableChangeState
@@ -61,8 +69,6 @@ const (
 	evActionOnBuildingStart
 	evActionOnBuildingCancel
 	evActionOnBuildingFinished
-	evItemRerollQualityStart
-	evItemRerollQualityCancel
 	evItemRerollQualityFinished
 	evInstallResourceStart
 	evInstallResourceCancel
@@ -83,6 +89,7 @@ const (
 	evUpdateReSpecPoints
 	evUpdateCurrency
 	evUpdateFactionStanding
+	evUpdateMistCityStanding
 	evRespawn
 	evServerDebugLog
 	evCharacterEquipmentChanged
@@ -105,7 +112,6 @@ const (
 	evUpdateMatchDetails
 	evObjectEvent
 	evNewMonolithObject
-	evNewSiegeCampObject
 	evNewOrbObject
 	evNewCastleObject
 	evNewSpellEffectArea
@@ -114,14 +120,12 @@ const (
 	evUpdateChainSpell
 	evNewTreasureChest
 	evStartMatch
-	evStartTerritoryMatchInfos
 	evStartArenaMatchInfos
-	evEndTerritoryMatch
 	evEndArenaMatch
 	evMatchUpdate
 	evActiveMatchUpdate
 	evNewMob
-	evDebugAggroInfo
+	evDebugMobInfo
 	evDebugVariablesInfo
 	evDebugReputationInfo
 	evDebugDiminishingReturnInfo
@@ -131,6 +135,7 @@ const (
 	evClaimOrbCancel
 	evOrbUpdate
 	evOrbClaimed
+	evOrbReset
 	evNewWarCampObject
 	evNewMatchLootChestObject
 	evNewArenaExit
@@ -160,6 +165,7 @@ const (
 	evKilledPlayer
 	evDied
 	evKnockedDown
+	evUnconcious
 	evMatchPlayerJoinedEvent
 	evMatchPlayerStatsEvent
 	evMatchPlayerStatsCompleteEvent
@@ -179,6 +185,7 @@ const (
 	evDuelStarted
 	evDuelEnded
 	evDuelDenied
+	evDuelRequestCanceled
 	evDuelLeftArea
 	evDuelReEnteredArea
 	evNewRealEstate
@@ -192,7 +199,7 @@ const (
 	evFurnitureObjectCheatProviderInfo
 	evFarmableObjectInfo
 	evNewUnreadMails
-	evUnknown187
+	evMailOperationPossible
 	evGuildLogoObjectUpdate
 	evStartLogout
 	evNewChatChannels
@@ -219,6 +226,7 @@ const (
 	evNewTeleportStone
 	evCloak
 	evPartyInvitation
+	evPartyJoinRequest
 	evPartyJoined
 	evPartyDisbanded
 	evPartyPlayerJoined
@@ -228,19 +236,19 @@ const (
 	evPartyLootSettingChangedPlayer
 	evPartySilverGained
 	evPartyPlayerUpdated
-	evPartyInvitationPlayerBusy
+	evPartyInvitationAnswer
+	evPartyJoinRequestAnswer
 	evPartyMarkedObjectsUpdated
 	evPartyOnClusterPartyJoined
 	evPartySetRoleFlag
+	evPartyInviteOrJoinPlayerEquipmentInfo
 	evSpellCooldownUpdate
-	evNewHellgate
-	evNewHellgateExit
+	evNewHellgateExitPortal
 	evNewExpeditionExit
 	evNewExpeditionNarrator
 	evExitEnterStart
 	evExitEnterCancel
 	evExitEnterFinished
-	evHellClusterTimeUpdate
 	evNewQuestGiverObject
 	evFullQuestInfo
 	evQuestProgressInfo
@@ -258,21 +266,23 @@ const (
 	evEnteringArenaLockStart
 	evEnteringArenaLockCancel
 	evInvitedToArenaMatch
+	evUsingHellgateShrine
+	evEnteringHellgateLockStart
+	evEnteringHellgateLockCancel
 	evPlayerCounts
 	evInCombatStateUpdate
 	evOtherGrabbedLoot
-	evSiegeCampClaimStart
-	evSiegeCampClaimCancel
-	evSiegeCampClaimFinished
-	evSiegeCampScheduleResult
 	evTreasureChestUsingStart
 	evTreasureChestUsingFinished
 	evTreasureChestUsingCancel
 	evTreasureChestUsingOpeningComplete
 	evTreasureChestForceCloseInventory
+	evLocalTreasuresUpdate
+	evLootChestSpawnpointsUpdate
 	evPremiumChanged
 	evPremiumExtended
 	evPremiumLifeTimeRewardGained
+	evGoldPurchased
 	evLaborerGotUpgraded
 	evJournalGotFull
 	evJournalFillError
@@ -317,10 +327,17 @@ const (
 	evDebugDrawEvent
 	evRecordCameraMove
 	evRecordStart
+	evDeliverCarriableObjectStart
+	evDeliverCarriableObjectCancel
+	evDeliverCarriableObjectReset
+	evDeliverCarriableObjectFinished
 	evTerritoryClaimStart
 	evTerritoryClaimCancel
 	evTerritoryClaimFinished
 	evTerritoryScheduleResult
+	evTerritoryUpgradeWithPowerCrystalResult
+	evReceiveCarriableObjectStart
+	evReceiveCarriableObjectFinished
 	evUpdateAccountState
 	evStartDeterministicRoam
 	evGuildFullAccessTagsUpdated
@@ -336,13 +353,12 @@ const (
 	evNewFloatObject
 	evNewFishingZoneObject
 	evFishingMiniGame
-	evSteamAchievementCompleted
+	evAlbionJournalAchievementCompleted
 	evUpdatePuppet
 	evChangeFlaggingFinished
 	evNewOutpostObject
 	evOutpostUpdate
 	evOutpostClaimed
-	evOutpostReward
 	evOverChargeEnd
 	evOverChargeStatus
 	evPartyFinderFullUpdate
@@ -352,6 +368,7 @@ const (
 	evPartyFinderJoinRequestDeclined
 	evNewUnlockedPersonalSeasonRewards
 	evPersonalSeasonPointsGained
+	evPersonalSeasonPastSeasonDataEvent
 	evEasyAntiCheatMessageToClient
 	evMatchLootChestOpeningStart
 	evMatchLootChestOpeningFinished
@@ -363,18 +380,26 @@ const (
 	evNewTileSwitch
 	evNewInformationProvider
 	evNewDynamicGuildLogo
+	evNewDecoration
 	evTutorialUpdate
 	evTriggerHintBox
 	evRandomDungeonPositionInfo
 	evNewLootChest
 	evUpdateLootChest
 	evLootChestOpened
+	evUpdateLootProtectedByMobsWithMinimapDisplay
 	evNewShrine
 	evUpdateShrine
+	evUpdateRoom
+	evNewMistDungeonRoomMobSoul
+	evNewHellgateShrine
+	evUpdateHellgateShrine
+	evActivateHellgateExit
 	evMutePlayerUpdate
 	evShopTileUpdate
 	evShopUpdate
-	evEasyAntiCheatKick
+	evAntiCheatKick
+	evBattlEyeServerMessage
 	evUnlockVanityUnlock
 	evAvatarUnlocked
 	evCustomizationChanged
@@ -393,13 +418,14 @@ const (
 	evInitHideoutAttackCancel
 	evInitHideoutAttackFinished
 	evHideoutManagementUpdate
+	evHideoutUpgradeWithPowerCrystalResult
 	evIpChanged
 	evSmartClusterQueueUpdateInfo
 	evSmartClusterQueueActiveInfo
 	evSmartClusterQueueKickWarning
 	evSmartClusterQueueInvite
 	evReceivedGvgSeasonPoints
-	evTerritoryBonusLevelUpdate
+	evTowerPowerPointUpdate
 	evOpenWorldAttackScheduleStart
 	evOpenWorldAttackScheduleFinished
 	evOpenWorldAttackScheduleCancel
@@ -413,19 +439,147 @@ const (
 	evNewHomeObject
 	evHideoutObjectUpdate
 	evUpdateInfamy
-	evUnknown408
-	evUnknown409
-	evUnknown410
-	evUnknown411
-	evUnknown412
-	evUnknown413
-	evUnknown414
-	evUnknown415
-	evUnknown416
-	evUnknown417
-	evUnknown418
-	evUnknown419
-	evUnknown420
-	evUnknown421
-	evUnknown422
+	evMinimapPositionMarkers
+	evNewTunnelExit
+	evCorruptedDungeonUpdate
+	evCorruptedDungeonStatus
+	evCorruptedDungeonInfamy
+	evHellgateRestrictedAreaUpdate
+	evHellgateInfamy
+	evHellgateStatus
+	evHellgateStatusUpdate
+	evHellgateSuspense
+	evReplaceSpellSlotWithMultiSpell
+	evNewCorruptedShrine
+	evUpdateCorruptedShrine
+	evCorruptedShrineUsageStart
+	evCorruptedShrineUsageCancel
+	evExitUsed
+	evLinkedToObject
+	evLinkToObjectBroken
+	evEstimatedMarketValueUpdate
+	evStuckCancel
+	evDungonEscapeReady
+	evFactionWarfareClusterState
+	evFactionWarfareHasUnclaimedWeeklyReportsEvent
+	evSimpleFeedback
+	evSmartClusterQueueSkipClusterError
+	evXignCodeEvent
+	evBatchUseItemStart
+	evBatchUseItemEnd
+	evRedZoneEventClusterStatus
+	evRedZonePlayerNotification
+	evRedZoneWorldEvent
+	evFactionWarfareStats
+	evUpdateFactionBalanceFactors
+	evFactionEnlistmentChanged
+	evUpdateFactionRank
+	evFactionWarfareCampaignRewardsUnlocked
+	evFeaturedFeatureUpdate
+	evNewCarriableObject
+	evMinimapCrystalPositionMarker
+	evCarriedObjectUpdate
+	evPickupCarriableObjectStart
+	evPickupCarriableObjectCancel
+	evPickupCarriableObjectFinished
+	evDoSimpleActionStart
+	evDoSimpleActionCancel
+	evDoSimpleActionFinished
+	evNotifyGuestAccountVerified
+	evMightAndFavorReceivedEvent
+	evWeeklyPvpChallengeRewardStateUpdate
+	evNewUnlockedPvpSeasonChallengeRewards
+	evStaticDungeonEntrancesDungeonEventStatusUpdates
+	evStaticDungeonDungeonValueUpdate
+	evStaticDungeonEntranceDungeonEventsAborted
+	evInAppPurchaseConfirmedGooglePlay
+	evFeatureSwitchInfo
+	evPartyJoinRequestAborted
+	evPartyInviteAborted
+	evPartyStartHuntRequest
+	evPartyStartHuntRequested
+	evPartyStartHuntRequestAnswer
+	evGuildInviteDeclined
+	evCancelMultiSpellSlots
+	evNewVisualEventObject
+	evCastleClaimProgress
+	evCastleClaimProgressLogo
+	evTownPortalUpdateState
+	evTownPortalFailed
+	evConsumableVanityChargesAdded
+	evFestivitiesUpdate
+	evNewBannerObject
+	evNewMistsImmediateReturnExit
+	evMistsPlayerJoinedInfo
+	evNewMistsStaticEntrance
+	evNewMistsOpenWorldExit
+	evNewTunnelExitTemp
+	evNewMistsWispSpawn
+	evMistsWispSpawnStateChange
+	evNewMistsCityEntrance
+	evNewMistsCityRoadsEntrance
+	evMistsCityRoadsEntrancePartyStateUpdate
+	evMistsCityRoadsEntranceClearStateForParty
+	evMistsEntranceDataChanged
+	evNewMistsCagedWisp
+	evMistsWispCageOpened
+	evMistsEntrancePartyBindingCreated
+	evMistsEntrancePartyBindingCleared
+	evMistsEntrancePartyBindingInfos
+	evNewMistsBorderExit
+	evNewMistsDungeonExit
+	evLocalQuestInfos
+	evLocalQuestStarted
+	evLocalQuestActive
+	evLocalQuestInactive
+	evLocalQuestProgressUpdate
+	evNewUnrestrictedPvpZone
+	evTemporaryFlaggingStatusUpdate
+	evSpellTestPerformanceUpdate
+	evTransformation
+	evTransformationEnd
+	evUpdateTrustlevel
+	evRevealHiddenTimeStamps
+	evModifyItemTraitFinished
+	evRerollItemTraitValueFinished
+	evHuntQuestProgressInfo
+	evHuntStarted
+	evHuntFinished
+	evHuntAborted
+	evHuntMissionStepStateUpdate
+	evNewHuntTrack
+	evHuntMissionUpdate
+	evHuntQuestMissionProgressUpdate
+	evHuntTrackUsed
+	evHuntTrackUseableAgain
+	evMinimapHuntTrackMarkers
+	evNoTracksFound
+	evHuntQuestAborted
+	evInteractWithTrackStart
+	evInteractWithTrackCancel
+	evInteractWithTrackFinished
+	evNewDynamicCompound
+	evLegendaryItemDestroyed
+	evAttunementInfo
+	evTerritoryClaimRaidedRawEnergyCrystalResult
+	evCarriedObjectExpiryWarning
+	evCarriedObjectExpired
+	evTerritoryRaidStart
+	evTerritoryRaidCancel
+	evTerritoryRaidFinished
+	evTerritoryRaidResult
+	evTerritoryMonolithActiveRaidStatus
+	evTerritoryMonolithActiveRaidCancelled
+	evMonolithEnergyStorageUpdate
+	evMonolithNextScheduledOpenWorldAttackUpdate
+	evMonolithProtectedBuildingsDamageReductionUpdate
+	evNewBuildingBaseEvent
+	evNewFortificationBuilding
+	evNewCastleGateBuilding
+	evBuildingDurabilityUpdate
+	evMonolithFortificationPointsUpdate
+	evFortificationBuildingUpgradeInfo
+	evFortificationBuildingsDamageStateUpdate
+	evUpdateEnemyWarBannerActive
+	evTerritoryAnnouncePlayerEjection
 )

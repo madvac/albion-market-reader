@@ -19,8 +19,10 @@ const (
 	opUnused OperationType = iota
 	opPing
 	opJoin
+	opVersionedOperation
 	opCreateAccount
 	opLogin
+	opCreateGuestAccount
 	opSendCrashLog
 	opSendTraceRoute
 	opSendVfxStats
@@ -28,15 +30,15 @@ const (
 	opCreateCharacter
 	opDeleteCharacter
 	opSelectCharacter
+	opAcceptPopups
+	opRedeemKeycode
 	opGetGameServerByCluster
-	opGetActiveSubscription
 	opGetShopPurchaseUrl
-	opGetBuyTrialDetails
 	opGetReferralSeasonDetails
 	opGetReferralLink
-	opGetAvailableTrialKeys
 	opGetShopTilesForCategory
 	opMove
+	opAttackStart
 	opCastStart
 	opCastCancel
 	opTerminateToggleSpell
@@ -65,8 +67,6 @@ const (
 	opTakeSilver
 	opActionOnBuildingStart
 	opActionOnBuildingCancel
-	opItemRerollQualityStart
-	opItemRerollQualityCancel
 	opInstallResourceStart
 	opInstallResourceCancel
 	opInstallSilver
@@ -87,10 +87,10 @@ const (
 	opFarmableFinishGrownItem
 	opFarmableDestroy
 	opFarmableGetProduct
+	opFarmableFill
 	opTearDownConstructionSite
-	opCastleGateUse
-	opAuctionCreateRequest
 	opAuctionCreateOffer
+	opAuctionCreateRequest
 	opAuctionGetOffers
 	opAuctionGetRequests
 	opAuctionBuyOffer
@@ -105,7 +105,6 @@ const (
 	opAuctionGetMyOpenOffers
 	opAuctionGetMyOpenRequests
 	opAuctionGetMyOpenAuctions
-	opUnknown89
 	opAuctionGetItemAverageStats
 	opAuctionGetItemAverageValue
 	opContainerOpen
@@ -119,6 +118,7 @@ const (
 	opInviteToGuild
 	opDeclineGuildInvitation
 	opKickFromGuild
+	opInstantJoinGuild
 	opDuellingChallengePlayer
 	opDuellingAcceptChallenge
 	opDuellingDenyChallenge
@@ -131,7 +131,6 @@ const (
 	opGetAttackInfo
 	opGetTerritorySeasonPoints
 	opGetAttackSchedule
-	opScheduleAttack
 	opGetMatches
 	opGetMatchDetails
 	opJoinMatch
@@ -150,7 +149,6 @@ const (
 	opGetMyTerritories
 	opMorganaCommand
 	opGetServerInfo
-	opInviteMercenaryToMatch
 	opSubscribeToCluster
 	opAnswerMercenaryInvitation
 	opGetCharacterEquipment
@@ -167,6 +165,7 @@ const (
 	opGetGvgSeasonHistoryRankings
 	opGetGvgSeasonGuildMemberHistory
 	opKickFromGvGMatch
+	opGetCrystalLeagueDailySeasonPoints
 	opGetChestLogs
 	opGetAccessRightLogs
 	opGetGuildAccountLogs
@@ -191,14 +190,16 @@ const (
 	opDeleteMail
 	opMarkMailUnread
 	opClaimAttachmentFromMail
-	opUpdateLfgInfo
-	opGetLfgInfos
-	opGetMyGuildLfgInfo
-	opGetLfgDescriptionText
-	opLfgApplyToGuild
-	opAnswerLfgGuildApplication
+	opApplyToGuild
+	opAnswerGuildApplication
+	opRequestGuildFinderFilteredList
+	opUpdateGuildRecruitmentInfo
+	opRequestGuildRecruitmentInfo
+	opRequestGuildFinderNameSearch
+	opRequestGuildFinderRecommendedList
 	opRegisterChatPeer
 	opSendChatMessage
+	opSendModeratorMessage
 	opJoinChatChannel
 	opLeaveChatChannel
 	opSendWhisperMessage
@@ -238,19 +239,19 @@ const (
 	opTerritoryFillNutrition
 	opTeleportBack
 	opPartyInvitePlayer
+	opPartyRequestJoin
 	opPartyAnswerInvitation
+	opPartyAnswerJoinRequest
 	opPartyLeave
 	opPartyKickPlayer
 	opPartyMakeLeader
 	opPartyChangeLootSetting
 	opPartyMarkObject
 	opPartySetRole
-	opGetGuildMOTD
-	opSetGuildMOTD
+	opSetGuildCodex
 	opExitEnterStart
 	opExitEnterCancel
 	opQuestGiverRequest
-	opUnknown233
 	opGoldMarketGetBuyOffer
 	opGoldMarketGetBuyOfferFromSilver
 	opGoldMarketGetSellOffer
@@ -261,15 +262,14 @@ const (
 	opGoldMarketCreateBuyOrder
 	opGoldMarketGetInfos
 	opGoldMarketCancelOrder
-	opUnknown244
-	opUnknown245
 	opGoldMarketGetAverageInfo
-	opSiegeCampClaimStart
-	opSiegeCampClaimCancel
 	opTreasureChestUsingStart
 	opTreasureChestUsingCancel
 	opUseLootChest
 	opUseShrine
+	opUseHellgateShrine
+	opUseSiegeBanner
+	opGetSiegeBannerInfo
 	opLaborerStartJob
 	opLaborerTakeJobLoot
 	opLaborerDismiss
@@ -277,16 +277,16 @@ const (
 	opLaborerBuyItem
 	opLaborerUpgrade
 	opBuyPremium
-	opBuyTrial
 	opRealEstateGetAuctionData
 	opRealEstateBidOnAuction
-	opGetSiegeCampCooldown
 	opFriendInvite
 	opFriendAnswerInvitation
 	opFriendCancelnvitation
 	opFriendRemove
 	opInventoryStack
 	opInventorySort
+	opInventoryDropAll
+	opInventoryAddToStacks
 	opEquipmentItemChangeSpell
 	opExpeditionRegister
 	opExpeditionRegisterCancel
@@ -299,6 +299,7 @@ const (
 	opEnteringExpeditionCancel
 	opActivateExpeditionCheckPoint
 	opArenaRegister
+	opArenaAddInvite
 	opArenaRegisterCancel
 	opArenaLeave
 	opJoinArenaMatch
@@ -306,7 +307,6 @@ const (
 	opEnteringArenaStart
 	opEnteringArenaCancel
 	opArenaCustomMatch
-	opArenaCustomMatchCreate
 	opUpdateCharacterStatement
 	opBoostFarmable
 	opGetStrikeHistory
@@ -321,6 +321,9 @@ const (
 	opClientLowMemoryWarning
 	opTerritoryClaimStart
 	opTerritoryClaimCancel
+	opDeliverCarriableObjectStart
+	opDeliverCarriableObjectCancel
+	opTerritoryUpgradeWithPowerCrystal
 	opRequestAppStoreProducts
 	opVerifyProductPurchase
 	opQueryGuildPlayerStats
@@ -353,6 +356,12 @@ const (
 	opSteamIdHasActiveAccount
 	opCheckEmailAccountState
 	opLinkAccountToSteamId
+	opInAppConfirmPaymentGooglePlay
+	opInAppConfirmPaymentAppleAppStore
+	opInAppPurchaseRequest
+	opInAppPurchaseFailed
+	opCharacterSubscriptionInfo
+	opAccountSubscriptionInfo
 	opBuyGvgSeasonBooster
 	opChangeFlaggingPrepare
 	opOverCharge
@@ -373,9 +382,12 @@ const (
 	opPartyFinderFulltextSearch
 	opPartyFinderRequestEquipmentSnapshot
 	opGetPersonalSeasonTrackerData
+	opGetPersonalSeasonPastRewardData
 	opUseConsumableFromInventory
 	opClaimPersonalSeasonReward
 	opEasyAntiCheatMessageToServer
+	opXignCodeMessageToServer
+	opBattlEyeMessageToServer
 	opSetNextTutorialState
 	opAddPlayerToMuteList
 	opRemovePlayerFromMuteList
@@ -386,9 +398,8 @@ const (
 	opSetMountSkin
 	opSetWardrobe
 	opChangeCustomization
-	opSetFavoriteIsland
+	opChangePlayerIslandData
 	opGetGuildChallengePoints
-	opTravelToHideout
 	opSmartQueueJoin
 	opSmartQueueLeave
 	opSmartQueueSelectSpawnCluster
@@ -399,6 +410,12 @@ const (
 	opHideoutGetInfo
 	opHideoutGetOwnerInfo
 	opHideoutSetTribute
+	opHideoutUpgradeWithPowerCrystal
+	opHideoutDeclareHQ
+	opHideoutUndeclareHQ
+	opHideoutGetHQRequirements
+	opHideoutBoost
+	opHideoutBoostConstruction
 	opOpenWorldAttackScheduleStart
 	opOpenWorldAttackScheduleCancel
 	opOpenWorldAttackConquerStart
@@ -408,4 +425,91 @@ const (
 	opRecoverVaultFromHideout
 	opGetGuildEnergyDrainInfo
 	opChannelingUpdate
+	opUseCorruptedShrine
+	opRequestEstimatedMarketValue
+	opLogFeedback
+	opGetInfamyInfo
+	opGetPartySmartClusterQueuePriority
+	opSetPartySmartClusterQueuePriority
+	opClientAntiAutoClickerInfo
+	opClientBotPatternDetectionInfo
+	opClientAntiGatherClickerInfo
+	opLoadoutCreate
+	opLoadoutRead
+	opLoadoutReadHeaders
+	opLoadoutUpdate
+	opLoadoutDelete
+	opLoadoutOrderUpdate
+	opLoadoutEquip
+	opBatchUseItemCancel
+	opEnlistFactionWarfare
+	opGetFactionWarfareWeeklyReport
+	opClaimFactionWarfareWeeklyReport
+	opGetFactionWarfareCampaignData
+	opClaimFactionWarfareItemReward
+	opSendMemoryConsumption
+	opPickupCarriableObjectStart
+	opPickupCarriableObjectCancel
+	opSetSavingChestLogsFlag
+	opGetSavingChestLogsFlag
+	opRegisterGuestAccount
+	opResendGuestAccountVerificationEmail
+	opDoSimpleActionStart
+	opDoSimpleActionCancel
+	opGetGvgSeasonContributionByActivity
+	opGetGvgSeasonContributionByCrystalLeague
+	opGetGuildMightCategoryContribution
+	opGetGuildMightCategoryOverview
+	opGetPvpChallengeData
+	opClaimPvpChallengeWeeklyReward
+	opGetPersonalMightStats
+	opAuctionGetLoadoutOffers
+	opAuctionBuyLoadoutOffer
+	opAccountDeletionRequest
+	opAccountReactivationRequest
+	opGetModerationEscalationDefiniton
+	opEventBasedPopupAddSeen
+	opGetItemKillHistory
+	opGetVanityConsumables
+	opEquipKillEmote
+	opChangeKillEmotePlayOnKnockdownSetting
+	opBuyVanityConsumableCharges
+	opReclaimVanityItem
+	opGetArenaRankings
+	opGetCrystalLeagueStatistics
+	opSendOptionsLog
+	opSendControlsOptionsLog
+	opMistsUseImmediateReturnExit
+	opMistsUseStaticEntrance
+	opMistsUseCityRoadsEntrance
+	opChangeNewGuildMemberMail
+	opGetNewGuildMemberMail
+	opChangeGuildFactionAllegiance
+	opGetGuildFactionAllegiance
+	opGuildBannerChange
+	opGuildGetOptionalStats
+	opGuildSetOptionalStats
+	opGetPlayerInfoForStalk
+	opPayGoldForCharacterTypeChange
+	opQuickSellAuctionQueryAction
+	opQuickSellAuctionSellAction
+	opFcmTokenToServer
+	opApnsTokenToServer
+	opDeathRecap
+	opAuctionFetchFinishedAuctions
+	opAbortAuctionFetchFinishedAuctions
+	opRequestLegendaryEvenHistory
+	opPartyAnswerStartHuntRequest
+	opHuntAbort
+	opUseFindTrackSpellFromItemPrepare
+	opInteractWithTrackStart
+	opInteractWithTrackCancel
+	opTerritoryRaidStart
+	opTerritoryRaidCancel
+	opTerritoryClaimRaidedRawEnergyCrystalResult
+	opGvGSeasonPlayerGuildParticipationDetails
+	opDailyMightBonus
+	opClaimDailyMightBonus
+	opGetFortificationGroupInfo
+	opUpgradeFortificationGroup
 )
